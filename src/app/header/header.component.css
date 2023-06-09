@@ -1,0 +1,16 @@
+#header {
+    height: 60px;
+}
+
+#header .btn {
+    margin: 0px 10px 0px 10px;
+}
+
+#header ul {
+    padding-right: 2%;
+}
+
+.btn-theme-color {
+    background-color: #7952B3;
+    color: #fff;
+}
