@@ -2,8 +2,16 @@
     margin: 0px 10px 0px 10px;
 }
 
-#header ul {
-    padding-right: 2%;
+.container-fluid {
+    padding: 0;
+}
+
+.top-section {
+    border-bottom: 1px solid #b1d5d9;
+}
+
+.user-image-padding {
+    padding-right: 10px;
 }
 
 .btn-theme-color {
