@@ -2,16 +2,6 @@
     <app-header></app-header>
 </header>
 
-<asl-google-signin-button *ngIf="!user"></asl-google-signin-button>
-<div *ngIf="user">
-    <img src="{{user.photoUrl}}">
-    <div>
-        <h4>{{user.name}}</h4>
-        <p>{{user.email}}</p>
-    </div>
-</div>
 <router-outlet></router-outlet>
-
 <footer>
-
 </footer>

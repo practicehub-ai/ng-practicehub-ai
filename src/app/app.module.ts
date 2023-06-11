@@ -37,7 +37,7 @@ import { HeaderComponent } from './header/header.component';
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              '105520952520-4aussfr0gorqcqsi4vlgv5s48skc5h9e.apps.googleusercontent.com'
+              '315966499963-20k3a9qprbb0siqhleseati4btqgq4ua.apps.googleusercontent.com'//'105520952520-4aussfr0gorqcqsi4vlgv5s48skc5h9e.apps.googleusercontent.com'
             )
           }
         ],
