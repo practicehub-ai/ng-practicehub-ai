@@ -13,6 +13,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SubjectComponent } from './subject/subject.component';
 import { HeaderComponent } from './header/header.component';
 import { LogoutComponent } from './logout/logout.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LogoutComponent } from './logout/logout.component';
     SignUpComponent,
     SubjectComponent,
     HeaderComponent,
-    LogoutComponent
+    LogoutComponent,
+    QuizComponent
   ],
   imports: [
     BrowserModule,
