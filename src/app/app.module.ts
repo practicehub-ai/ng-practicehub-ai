@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { SocialLoginModule, SocialAuthServiceConfig, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -30,7 +32,8 @@ import { QuizComponent } from './quiz/quiz.component';
     BrowserModule,
     AppRoutingModule,
     SocialLoginModule,
-    GoogleSigninButtonModule
+    GoogleSigninButtonModule,
+    FormsModule
   ],
   providers: [
     {
