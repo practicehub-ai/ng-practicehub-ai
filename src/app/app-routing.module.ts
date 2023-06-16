@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SubjectComponent } from './subject/subject.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, //default route to home
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'subject', component: SubjectComponent },
+  { path: 'quiz', component: QuizComponent },
 
 ];
 
