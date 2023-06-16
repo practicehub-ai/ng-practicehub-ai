@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { SupabaseClient, createClient } from '@supabase/supabase-js'
+import { environment } from 'src/app/environments/environment';
+
+// Create a single supabase client for interacting with your database
+
 
 @Component({
   selector: 'app-home',
@@ -6,23 +11,39 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  subjectCards: any = [
-    {
-      "subject": "Mathematics",
-      "subjectText": "Our AI-powered platform that provides students with a unique learning experience by offering a wide range of multiple- choice questions in Maths."
-    },
-    // {
-    //   "subject": "Physics",
-    //   "subjectText": "AI-powered multiple-choice questions for physics, designed to enhance students' learning experience and deepen their understanding of the subject."
-    // },
-    {
-      "subject": "Chemistry",
-      "subjectText": "AI-generated multiple-choice questions in chemistry, empowering them to master the subject through interactive and engaging practice."
-    },
-    {
-      "subject": "Biology",
-      "subjectText": "AI-generated multiple-choice questions in biology, equipping students with interactive learning tools to strengthen their understanding."
+
+  private supabase:SupabaseClient;
+  subjects: any = [];
+  subjectCards: any = [];
+  constructor() { 
+    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);    
+  }
+  
+  async getSubjects(){  
+    const { data, error } = await this.supabase.from('Subjects').select('*');
+
+    if (error) {
+      console.log(error);
+      return;
     }
-  ];
+    return data;
+  }
+  ngOnInit() {
+    this.fetchSubjects();
+  }
+
+  async fetchSubjects() {
+    this.subjects = await this.getSubjects();
+    console.log(this.subjects);
+    this.subjectCards = this.subjects.map((subject: any) => {
+      return {
+        id: subject.id,
+        subject: subject.Subject,
+        subjectText:'Our AI-powered platform that provides students with a unique learning experience by offering a wide range of multiple- choice questions in ' + subject.Subject + '.'
+      }
+    });
+  }
+
+  
 
 }
