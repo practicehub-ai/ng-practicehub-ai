@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js'
 import { environment } from 'src/app/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class QuizComponent {
   private supabase: SupabaseClient;
+  subid: number = 0;
   questions: any;
   quiz: any;
   questionCount = 0;
@@ -18,13 +20,12 @@ export class QuizComponent {
   selectionArray = [];
 
 
-  constructor() {
+  constructor(private route: ActivatedRoute) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-
-
+    this.route.queryParams.subscribe(params => {this.subid = params['subid'];});
   }
   async getQuestions() {
-    const { data, error } = await this.supabase.from('QNA').select('*');
+    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid);
 
     if (error) {
       console.log(error);
