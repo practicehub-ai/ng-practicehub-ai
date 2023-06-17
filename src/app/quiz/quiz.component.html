@@ -14,7 +14,7 @@
 <br>
 <p>Correct Answer: {{quiz[questionCount].answer}}</p>
 
-<h3>Validation: {{quiz[questionCount].answer == selectedOption}}</h3>
+<h3>Validation: {{validation}}</h3>
 
 
 
@@ -24,4 +24,4 @@
 <button type="button" [disabled]="questionCount === quiz.length-1" class="btn btn-primary"
     (click)="nextBtnHandler()">Next</button>
 
-<!-- <button type="button" class="btn btn-primary" (click)="submitBtnHandler()">Submit</button> -->
+<button type="button" class="btn btn-primary" (click)="submitBtnHandler()">Submit</button>
