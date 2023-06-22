@@ -4,17 +4,3 @@
     <p>Practice hub.AI is a platform for practicing your skills in a variety of subjects.</p>
   </div>
 </div>
-<div class="row subject-cards">
-  <div class="col-sm-3" *ngFor="let sub of subjectCards;">
-    <div class="card">
-      <div class="card-header">
-        {{sub.subject}}
-      </div>
-      <div class="card-body">
-        <!-- <h5 class="card-title">Maths </h5> -->
-        <p class="card-text">{{sub.subjectText}}</p>
-        <a href="/quiz?subid={{sub.id}}" class="btn btn-primary">Go to practice</a>
-      </div>
-    </div>
-  </div>
-</div>

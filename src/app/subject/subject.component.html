@@ -1,21 +1,21 @@
 <div class="subject-section ">
-    <h2>Choose a subject</h2>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-            Physics
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-            Chemistry
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-            Biology
-        </label>
+    <!-- <div class="jumbotron">
+        <h1>Welcome to the Practice hub!</h1>
+        <p>Practice hub.AI is a platform for practicing your skills in a variety of subjects.</p>
+    </div> -->
+
+    <div class="row subject-cards">
+        <div class="col-sm-3" *ngFor="let sub of subjectCards;">
+            <div class="card">
+                <div class="card-header">
+                    {{sub.subject}}
+                </div>
+                <div class="card-body">
+                    <!-- <h5 class="card-title">Maths </h5> -->
+                    <p class="card-text">{{sub.subjectText}}</p>
+                    <a href="/quiz?subid={{sub.id}}" class="btn btn-primary">Go to practice</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
