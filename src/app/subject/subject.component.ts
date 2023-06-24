@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js'
-import { environment } from 'src/app/environments/environment';
+import { environment } from 'src/environments/environment';
 
 // Create a single supabase client for interacting with your database
 @Component({

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js'
-import { environment } from 'src/app/environments/environment';
+import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
