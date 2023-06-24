@@ -1,3 +1,37 @@
 .home-section {
     margin-top: 100px;
 }
+
+.container {
+    /* margin: 0;
+    padding: 0; */
+    max-width: 100%;
+}
+
+.row {
+    margin: 1%
+}
+
+.ph {
+    /* border: 1px solid grey; */
+    background: #f3f3f9;
+    height: 100px
+}
+
+.card {
+    background: #dbe1e1 !important
+}
+
+/* .subject-col {
+    padding-left: 6%;
+} */
+
+/* .question-count-col {
+    padding-right: 5%;
+} */
+
+.subject-card-text {
+    font-size: xx-large;
+    font-weight: 700;
+    color: slateblue
+}
