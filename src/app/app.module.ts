@@ -16,6 +16,7 @@ import { SubjectComponent } from './subject/subject.component';
 import { HeaderComponent } from './header/header.component';
 import { LogoutComponent } from './logout/logout.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { SupabaseService } from './supabase.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { QuizComponent } from './quiz/quiz.component';
           console.error(err);
         }
       } as SocialAuthServiceConfig,
-    }
+    },
+    SupabaseService
   ],
   bootstrap: [AppComponent]
 })

@@ -50,6 +50,9 @@ export class SupabaseService {
       provider: 'google',
     });
   }
+  async signInWithProvider(provider: string): Promise<void> {
+    await this.supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+  }
   public signOut(): Promise<any> {
     return this.supabaseClient.auth.signOut();
   }
