@@ -31,8 +31,12 @@ export class SupabaseService {
     return user;//this.supabaseClient.auth.getUser();
   }
   public async getSession() {
-    const { data, error } = await this.supabaseClient.auth.getSession()
-    return data;//this.supabaseClient.auth.getSession();
+    const { data, error } = await this.supabaseClient.auth.getSession();
+    if (error) {
+      console.error('Error retrieving session:', error);
+      return null;
+    }
+    return data;
   }
   // public getProfile(): PromiseLike<any> {
   //   const user = this.getUser().then((user) => {return user});
