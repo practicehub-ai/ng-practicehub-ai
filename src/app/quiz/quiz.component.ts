@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 export class QuizComponent {
   private supabase: SupabaseClient;
   subid: number = 0;
+  maxQuestionCount: number = 40;
+  prevQno: any;
   questions: any;
   quiz: any;
   questionCount = 0;
@@ -51,10 +53,11 @@ export class QuizComponent {
         answer: ques.answer,
         qid: ques.id
       }
+      this.qnoBtnHandler(0);
     });
     console.log(this.quiz)
 
-    this.selectedOption = this.quiz[0].choices.split(',')[1]
+    //this.selectedOption = this.quiz[0].choices.split(',')[1]
   }
 
 
@@ -81,14 +84,46 @@ export class QuizComponent {
     console.log("prv ", this.questionCount)
   }
 
+  optionChange(evt: Event) {
+    //this.quiz[this.questionCount].userSelection = this.selectedOption;
+    console.log(evt)
+  }
+  qnoBtnHandler(qno: number) {
+    this.prevQno = this.questionCount;
+    if (this.selectedOption) {
+      this.quiz[this.prevQno].userSelection = this.selectedOption;
+    }
+    this.questionCount = qno;
+    if (this.quiz[this.questionCount].userSelection) {
+      this.selectedOption = this.quiz[this.questionCount].userSelection;
+    } else {
+      this.selectedOption = "";
+    }
+
+
+
+    console.log(this.prevQno + "prevQno----quc ", this.questionCount)
+
+  }
+
+  //function to return list of numbers from 0 to n-1
+  numSequence(n: number): Array<number> {
+    let numArr = [];
+    for (var i = n - 10; i < n; i++) {
+      numArr.push(i);
+    }
+    return numArr;
+  }
+
   submitBtnHandler() {
 
     let correctAnswer = this.checkUndefinedOrNullOrEmptyString(this.quiz[this.questionCount].answer) ? this.quiz[this.questionCount].answer : this.quiz[this.questionCount].answer.trim();
     let userSelectedAnswer = this.checkUndefinedOrNullOrEmptyString(this.selectedOption) ? this.selectedOption : this.selectedOption.trim();
     if (!this.checkUndefinedOrNullOrEmptyString(correctAnswer) && !this.checkUndefinedOrNullOrEmptyString(userSelectedAnswer)) {
-      this.validation = (correctAnswer === userSelectedAnswer) ? 'Correct Answer' : 'Oops! Not a right answer';
+      this.validation = (correctAnswer === userSelectedAnswer) ? 'right' : 'wrong';
     } else {
-      this.validation = 'Select an Answer';
+      this.validation = 'not-answered';
+
     }
   }
 

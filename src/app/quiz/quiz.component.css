@@ -3,3 +3,38 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+
+.columns {
+    border: 1px solid red;
+}
+
+.quiz-section {
+    height: 600px;
+}
+
+.qno-btn {
+    border: 1px solid;
+    /* height: 40px; */
+    width: 40px;
+    margin: 5px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    /* Standard syntax */
+}
+
+.right-answer {
+    background: green
+}
+
+.wrong-answer {
+    background: red;
+}
+
+.not-answered {
+    background: yellow;
+}
+
+.need-to-attend {
+    background: grey;
+}
