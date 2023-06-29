@@ -25,7 +25,10 @@ export class SupabaseService {
 
   constructor() {
      this.supabaseClient = createClient(environment.supabaseUrl, environment.supabaseKey);
+
+     
   }
+
   public async getUser() {
     const { data: { user } } = await this.supabaseClient.auth.getUser()
     return user;//this.supabaseClient.auth.getUser();
@@ -46,6 +49,7 @@ export class SupabaseService {
   //   .eq('id', user?.id)
   //   .single();
   // }
+
   public authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void): any {
     return this.supabaseClient.auth.onAuthStateChange(callback);
   }

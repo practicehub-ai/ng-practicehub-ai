@@ -3,9 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { SocialLoginModule, SocialAuthServiceConfig, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
-import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
-
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -32,28 +29,9 @@ import { SupabaseService } from './supabase.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SocialLoginModule,
-    GoogleSigninButtonModule,
     FormsModule
   ],
-  providers: [
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '315966499963-20k3a9qprbb0siqhleseati4btqgq4ua.apps.googleusercontent.com'//'105520952520-4aussfr0gorqcqsi4vlgv5s48skc5h9e.apps.googleusercontent.com'
-            )
-          }
-        ],
-        onError: (err) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig,
-    },
+  providers: [   
     SupabaseService
   ],
   bootstrap: [AppComponent]

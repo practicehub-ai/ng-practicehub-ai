@@ -11,18 +11,17 @@ import { SupabaseService } from '../supabase.service';
 
 export class HeaderComponent {
 
-  constructor(private authService: SocialAuthService, private router: Router,private supabaseService: SupabaseService) { }
+  constructor(private router: Router,private supabaseService: SupabaseService) { }
   title = 'PracticeHubWebApp';
   user: any;
   loggedIn: any;
-  ngOnInit() {
-    
-
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = (user != null);
-      console.log(user)
-      this.router.navigate(['/subject'])
+  ngOnInit() {    
+    this.supabaseService.authChanges((event, session) => {
+      console.log(event, session);
+      this.user = session?.user;
+      this.loggedIn = (session?.user != null);
+      console.log(session?.user)
+      //this.router.navigate(['/subject'])
     });
   }
   async signInWithProvider(provider: string): Promise<void> {
@@ -34,7 +33,8 @@ export class HeaderComponent {
     }
   }
 
-  logoutHandler() {
+ async logoutHandler() {
+    await this.supabaseService.signOut();
     this.router.navigate(['/']);
     delete this.user;
   }
