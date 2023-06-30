@@ -6,7 +6,8 @@
 
         <div *ngFor="let option of quiz[questionCount].choices.split(','); let i = index">
             <label>
-                <input id="opt{{i}}" name="options" type="radio" [value]="option" [(ngModel)]="selectedOption" />
+                <input id="opt{{i}}" name="options" type="radio" [value]="option" [(ngModel)]="selectedOption"
+                    (change)="submitBtnHandler()" />
                 {{option}}
             </label>
         </div>
@@ -19,7 +20,7 @@
         <div class=" row">
             <div class="col-5 quiz-paginate">
                 <div class="  d-flex flex-row">
-                    <div *ngFor="let n of numSequence(10);" (click)="qnoBtnHandler(n)" class="qno-btn flex-fill">
+                    <div *ngFor="let n of numSequence(10);" (click)="qnoBtnHandler(n)" class="qno-btn flex-fill ">
                         {{n+1}}
                     </div>
                 </div>
