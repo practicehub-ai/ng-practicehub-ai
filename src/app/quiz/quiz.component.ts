@@ -21,6 +21,7 @@ export class QuizComponent {
   selectedOption: any;
   selectionArray = [];
   validation: any;
+  qnoBtnElArr: any = [];
 
 
   constructor(private route: ActivatedRoute) {
@@ -40,6 +41,9 @@ export class QuizComponent {
   }
   ngOnInit() {
     this.fetchQuestions();
+    this.qnoBtnElArr = document.getElementsByClassName('qno-btn');
+    this.qnoBtnHandler(0);
+
   }
 
   async fetchQuestions() {
@@ -53,7 +57,7 @@ export class QuizComponent {
         answer: ques.answer,
         qid: ques.id
       }
-      this.qnoBtnHandler(0);
+
     });
     console.log(this.quiz)
 
@@ -69,7 +73,11 @@ export class QuizComponent {
     }
     this.questionCount++;
     this.selectedOption = this.quiz[this.questionCount].userSelection;
-
+    this.submitBtnHandler();
+    if (this.checkUndefinedOrNullOrEmptyString(this.quiz[this.questionCount].validation)) {
+      let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
+      currBtn.style.background = "yellow";
+    }
 
     console.log("nxt ", this.questionCount,)
   }
@@ -81,14 +89,21 @@ export class QuizComponent {
     this.questionCount--;
     this.selectedOption = this.quiz[this.questionCount].userSelection;
 
+    this.submitBtnHandler();
+    if (this.checkUndefinedOrNullOrEmptyString(this.quiz[this.questionCount].validation)) {
+      let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
+      currBtn.style.background = "yellow";
+    }
+
     console.log("prv ", this.questionCount)
   }
 
-  optionChange(evt: Event) {
-    //this.quiz[this.questionCount].userSelection = this.selectedOption;
-    console.log(evt)
-  }
+
   qnoBtnHandler(qno: number) {
+    if (this.checkUndefinedOrNullOrEmptyString(this.quiz[qno].validation)) {
+      let currBtn = this.qnoBtnElArr[qno] as HTMLDivElement;
+      currBtn.style.background = "yellow";
+    }
     this.prevQno = this.questionCount;
     if (this.selectedOption) {
       this.quiz[this.prevQno].userSelection = this.selectedOption;
@@ -116,19 +131,27 @@ export class QuizComponent {
   }
 
   submitBtnHandler() {
-
+    console.log("submit");
     let correctAnswer = this.checkUndefinedOrNullOrEmptyString(this.quiz[this.questionCount].answer) ? this.quiz[this.questionCount].answer : this.quiz[this.questionCount].answer.trim();
     let userSelectedAnswer = this.checkUndefinedOrNullOrEmptyString(this.selectedOption) ? this.selectedOption : this.selectedOption.trim();
+    let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
     if (!this.checkUndefinedOrNullOrEmptyString(correctAnswer) && !this.checkUndefinedOrNullOrEmptyString(userSelectedAnswer)) {
       this.validation = (correctAnswer === userSelectedAnswer) ? 'right' : 'wrong';
-    } else {
-      this.validation = 'not-answered';
-
+      if (this.validation === 'right') {
+        this.quiz[this.questionCount].validation = "Y"
+        currBtn.style.background = "green";
+      } else if (this.validation === 'wrong') {
+        this.quiz[this.questionCount].validation = "N"
+        currBtn.style.background = "red";
+      }
     }
   }
 
+
+
   commonFuncOnNxtPrv() {
     this.validation = '';
+    //this.submitBtnHandler()
   }
 
   checkUndefinedOrNullOrEmptyString(value: any) {
