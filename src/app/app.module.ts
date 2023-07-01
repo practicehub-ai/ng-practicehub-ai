@@ -32,7 +32,8 @@ import { SupabaseService } from './supabase.service';
     FormsModule
   ],
   providers: [   
-    SupabaseService
+      SupabaseService,
+      //authGuard
   ],
   bootstrap: [AppComponent]
 })

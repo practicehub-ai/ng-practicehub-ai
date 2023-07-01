@@ -25,8 +25,6 @@ export class SupabaseService {
 
   constructor() {
      this.supabaseClient = createClient(environment.supabaseUrl, environment.supabaseKey);
-
-     
   }
 
   public async getUser() {
@@ -39,6 +37,8 @@ export class SupabaseService {
       console.error('Error retrieving session:', error);
       return null;
     }
+    
+    console.log(data);
     return data;
   }
   // public getProfile(): PromiseLike<any> {
@@ -59,7 +59,7 @@ export class SupabaseService {
     });
   }
   async signInWithProvider(provider: string): Promise<void> {
-    await this.supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+    await this.supabaseClient.auth.signInWithOAuth({ provider: 'google' });    
   }
   public signOut(): Promise<any> {
     return this.supabaseClient.auth.signOut();

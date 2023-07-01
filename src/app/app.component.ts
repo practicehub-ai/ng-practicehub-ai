@@ -9,11 +9,11 @@ import { SupabaseService } from './supabase.service';
 })
 export class AppComponent {
 
-  session = this.supabase.getSession();
+  //session = this.supabase.getSession();
 
   constructor(private readonly supabase: SupabaseService) {}
 
   ngOnInit() {
-   this.supabase.getUser().then((user) => {console.log(user)});
+   //this.supabase.getUser().then((user) => {console.log(user)});
   }
 }

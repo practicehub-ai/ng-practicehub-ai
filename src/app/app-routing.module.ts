@@ -6,14 +6,15 @@ import { LogoutComponent } from './logout/logout.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SubjectComponent } from './subject/subject.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, //default route to home
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'signup', component: SignUpComponent },
-  { path: 'subject', component: SubjectComponent },
-  { path: 'quiz', component: QuizComponent },
+  { path: 'subject', component: SubjectComponent,canActivate: [authGuard] },
+  { path: 'quiz', component: QuizComponent,canActivate: [authGuard]  },
 
 ];
 

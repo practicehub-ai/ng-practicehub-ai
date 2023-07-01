@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SocialAuthService } from "@abacritt/angularx-social-login";
 import { Router } from '@angular/router';
 import { SupabaseService } from '../supabase.service';
 
@@ -21,13 +20,14 @@ export class HeaderComponent {
       this.user = session?.user;
       this.loggedIn = (session?.user != null);
       console.log(session?.user)
-      //this.router.navigate(['/subject'])
+      localStorage.setItem('practiceUserId', JSON.stringify(session?.user?.id));
     });
   }
-  async signInWithProvider(provider: string): Promise<void> {
+  async signInWithProvider(provider: string){
     try {
-      await this.supabaseService.signInWithProvider(provider);
+       await this.supabaseService.signInWithProvider(provider);
       // Redirect to the desired page after successful login
+      
     } catch (error) {
       console.error('Provider login error:', error);
     }
