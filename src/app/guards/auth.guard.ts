@@ -19,9 +19,9 @@ export const authGuard: CanActivateFn = (route, state) => {
     localStorage.setItem('practiceUserId', JSON.stringify(session?.user?.id));
   });
  
-  let practiceUserId = localStorage.getItem('practiceUserId');
+  console.log("auth user: ",user);
   console.log("auth loggedIn: ",loggedIn);
-  if (loggedIn !== null) {
+  if (loggedIn !== "undefined"){
     console.log("true");
     return true;
   }
