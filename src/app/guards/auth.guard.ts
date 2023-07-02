@@ -11,8 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log("Type of loggedIn ",typeof loggedIn);
   console.log("loggedIn ",loggedIn);
 
-  if (loggedIn !== "undefined"){
-    router.navigate(['/subject']);
+  if (loggedIn !== "undefined"){    
     console.log("true");
     return true;
   }
