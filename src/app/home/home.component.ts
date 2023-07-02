@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,10 +11,7 @@ export class HomeComponent {
   maxQuestions = 200;
   router: any;
 
-  constructor(router:Router) { this.router=router;
-    if (localStorage.getItem('practiceUserId') !== "undefined"){
-      this.router.navigate(['/subject']);      
-    }
+  constructor() { 
   }
   ngOnInit() {
     this.startTimer()
