@@ -11,11 +11,12 @@ export class HomeComponent {
   maxQuestions = 200;
   router: any;
 
-  constructor(router:Router) { this.router=router;}
-  ngOnInit() {    
+  constructor(router:Router) { this.router=router;
     if (localStorage.getItem('practiceUserId') !== "undefined"){
       this.router.navigate(['/subject']);      
     }
+  }
+  ngOnInit() {
     this.startTimer()
   }
   startTimer() {
