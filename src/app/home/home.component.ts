@@ -12,11 +12,11 @@ export class HomeComponent {
   router: any;
 
   constructor(router:Router) { this.router=router;}
-  ngOnInit() {
-    this.startTimer()
+  ngOnInit() {    
     if (localStorage.getItem('practiceUserId') !== "undefined"){
       this.router.navigate(['/subject']);      
     }
+    this.startTimer()
   }
   startTimer() {
     this.interval = setInterval(() => {
