@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn,Router } from '@angular/router';
+import { SupabaseService } from '../supabase.service';
 
 
 
@@ -8,9 +9,19 @@ export const authGuard: CanActivateFn = (route, state) => {
   // If not, redirect the user to the login page
   const router=inject(Router);
 
+  let user: any;
+  let loggedIn: any;
+  let supabaseService: SupabaseService = new SupabaseService();
+  supabaseService.authChanges((event, session) => {
+    user = session?.user;
+    loggedIn = (session?.user != null);
+    //console.log(session?.user)
+    localStorage.setItem('practiceUserId', JSON.stringify(session?.user?.id));
+  });
+ 
   let practiceUserId = localStorage.getItem('practiceUserId');
-  console.log(practiceUserId);
-  if (practiceUserId !== null) {
+  console.log(loggedIn);
+  if (loggedIn !== null) {
     console.log("true");
     return true;
   }
@@ -22,3 +33,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     return false;
   }
 };
+function ngOnInit() {
+  throw new Error('Function not implemented.');
+}
+
