@@ -19,8 +19,9 @@ export class HeaderComponent {
       //console.log(event, session);
       this.user = session?.user;
       this.loggedIn = (session?.user != null);
-      //console.log(session?.user)
+      console.log("session user Id ",session?.user?.id)
       localStorage.setItem('practiceUserId', JSON.stringify(session?.user?.id));
+      console.log("practiceUserId ",localStorage.getItem('practiceUserId'))
     });
   }
   async signInWithProvider(provider: string){
