@@ -8,9 +8,9 @@ export const authGuard: CanActivateFn = (route, state) => {
   // If not, redirect the user to the login page
   const router=inject(Router);
 
-  let practiceUserId:string|null = localStorage.getItem('practiceUserId');
+  let practiceUserId = localStorage.getItem('practiceUserId');
   console.log(practiceUserId);
-  if (practiceUserId) {
+  if (practiceUserId !== undefined) {
     console.log("true");
     return true;
   }
