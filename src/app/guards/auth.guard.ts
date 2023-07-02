@@ -10,7 +10,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   let practiceUserId:string|null = localStorage.getItem('practiceUserId');
   console.log(practiceUserId);
-  if (practiceUserId!=null && practiceUserId!="" && practiceUserId!="undefined") {
+  if (practiceUserId!=null || practiceUserId!="" || practiceUserId!="undefined") {
     console.log("true");
     return true;
   }

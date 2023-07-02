@@ -15,19 +15,21 @@ export class HeaderComponent {
   user: any;
   loggedIn: any;
   ngOnInit() {    
-    this.supabaseService.authChanges((event, session) => {
-      console.log(event, session);
+    this.supabaseService.authChanges((event, session) => {     
+      //console.log(event, session);
       this.user = session?.user;
       this.loggedIn = (session?.user != null);
-      console.log(session?.user)
+      //console.log(session?.user)
       localStorage.setItem('practiceUserId', JSON.stringify(session?.user?.id));
     });
   }
   async signInWithProvider(provider: string){
     try {
-       await this.supabaseService.signInWithProvider(provider);
-      // Redirect to the desired page after successful login
       
+       const {data,error} = await this.supabaseService.signInWithProvider(provider);
+       console.log("signin : ",data);
+       console.log("error: ",error);
+      // Redirect to the desired page after successful login
     } catch (error) {
       console.error('Provider login error:', error);
     }

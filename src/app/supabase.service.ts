@@ -10,6 +10,7 @@ import {
   User,
 } from '@supabase/supabase-js';
 
+
 export interface IUser {
   email: string;
   name: string;
@@ -55,11 +56,14 @@ export class SupabaseService {
   }
   public signIn(email: string): Promise<any> {
     return this.supabaseClient.auth.signInWithOAuth({
-      provider: 'google',
+      provider: 'google'
+    
     });
   }
-  async signInWithProvider(provider: string): Promise<void> {
-    await this.supabaseClient.auth.signInWithOAuth({ provider: 'google' });    
+  async signInWithProvider(provider: string): Promise<any> {    
+    return this.supabaseClient.auth.signInWithOAuth({ provider: 'google', 
+      options: { redirectTo:  "https://practicehubai.herokuapp.com/subject" }
+    });    
   }
   public signOut(): Promise<any> {
     return this.supabaseClient.auth.signOut();
