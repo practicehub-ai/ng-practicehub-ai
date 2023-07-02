@@ -62,7 +62,7 @@ export class SupabaseService {
   }
   async signInWithProvider(provider: string): Promise<any> {    
     return this.supabaseClient.auth.signInWithOAuth({ provider: 'google', 
-                                                      options: { redirectTo:  "https://practicehubai.herokuapp.com/subject" }
+                                                      options: { redirectTo:  "../subject" }
     });    
   }
   public signOut(): Promise<any> {
