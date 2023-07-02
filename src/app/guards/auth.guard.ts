@@ -17,6 +17,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   else
   {
     console.log("false");
+    localStorage.removeItem('practiceUserId');
     router.navigate(['/']);
     return false;
   }
