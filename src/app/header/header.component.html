@@ -15,7 +15,8 @@
                 </li>
                 <li class="nav-item">
                     <!-- <asl-google-signin-button type="standard" size="large" *ngIf="!user"></asl-google-signin-button> -->
-                    <button type="button" class="btn btn-primary" (click)="signInWithProvider('google')"  *ngIf="!user">Sign in with Google</button>
+                    <!-- <button type="button" class="btn btn-primary" (click)="signInWithProvider('google')"  *ngIf="!user">Sign in with Google</button> -->
+                    <button type="button" class="btn btn-primary" (click)="signIn()"  *ngIf="!user">Sign in</button>
                     <div class="d-flex align-items-center" *ngIf="user" style="text-align: right;">
                         <div class="rounded-circle user-image-padding">
                             <img src="{{user.user_metadata.avatar_url}}" width="45%" alt="user photo" class="img-fluid rounded-circle">

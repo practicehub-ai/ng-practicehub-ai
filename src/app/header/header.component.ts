@@ -19,15 +19,16 @@ export class HeaderComponent {
       //console.log(event, session);
       this.user = session?.user;
       this.loggedIn = (session?.user != null);
-
-      if(this.loggedIn){this.router.navigate(['/subject']);}
-      else{this.router.navigate(['/']);}
       
       console.log("session user Id ",session?.user?.id)
       localStorage.setItem('practiceUserId', JSON.stringify(session?.user?.id));
       console.log("practiceUserId ",localStorage.getItem('practiceUserId'))
     });
   }
+  async signIn() {
+    this.router.navigate(['/login']);
+  }
+
   async signInWithProvider(provider: string){
     try {
       
