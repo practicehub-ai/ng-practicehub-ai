@@ -27,9 +27,8 @@ export class HeaderComponent {
   async signInWithProvider(provider: string){
     try {
       
-       const {data,error} = await this.supabaseService.signInWithProvider(provider);
-       console.log("signin : ",data);
-       console.log("error: ",error);
+       await this.supabaseService.signInWithProvider(provider);
+       
       // Redirect to the desired page after successful login
     } catch (error) {
       console.error('Provider login error:', error);
