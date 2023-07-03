@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { SupabaseService } from '../supabase.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +11,24 @@ export class HomeComponent {
   animateCount = 0; val = 0;
   interval: any;
   maxQuestions = 200;
-  router: any;
 
-  constructor() { 
+  constructor(private router: Router,private supabaseService: SupabaseService) { }
+  
+  GoToPractice(){
+    this.router.navigate(['/subject']);
   }
+  user: any;
+  loggedIn: any;
   ngOnInit() {
+    this.supabaseService.authChanges((event, session) => {     
+      //console.log(event, session);
+      this.user = session?.user;
+      this.loggedIn = (session?.user != null);
+
+      if(this.loggedIn){
+        this.router.navigate(['/subject']);
+      }
+    });
     this.startTimer()
   }
   startTimer() {
