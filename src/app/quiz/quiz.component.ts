@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent {
+  optionElArr: any = [];
   private supabase: SupabaseClient;
   subid: number = 0;
   maxQuestionCount: number = 40;
@@ -71,9 +72,10 @@ export class QuizComponent {
     if (this.selectedOption) {
       this.quiz[this.questionCount].userSelection = this.selectedOption;
     }
+    this.submitBtnHandler();
     this.questionCount++;
     this.selectedOption = this.quiz[this.questionCount].userSelection;
-    this.submitBtnHandler();
+
     if (this.checkUndefinedOrNullOrEmptyString(this.quiz[this.questionCount].validation)) {
       let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
       currBtn.style.background = "yellow";
@@ -86,10 +88,11 @@ export class QuizComponent {
     if (this.selectedOption) {
       this.quiz[this.questionCount].userSelection = this.selectedOption;
     }
+    this.submitBtnHandler();
     this.questionCount--;
     this.selectedOption = this.quiz[this.questionCount].userSelection;
 
-    this.submitBtnHandler();
+
     if (this.checkUndefinedOrNullOrEmptyString(this.quiz[this.questionCount].validation)) {
       let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
       currBtn.style.background = "yellow";
@@ -100,6 +103,7 @@ export class QuizComponent {
 
 
   qnoBtnHandler(qno: number) {
+
     if (this.checkUndefinedOrNullOrEmptyString(this.quiz[qno].validation)) {
       let currBtn = this.qnoBtnElArr[qno] as HTMLDivElement;
       currBtn.style.background = "yellow";
@@ -108,16 +112,16 @@ export class QuizComponent {
     if (this.selectedOption) {
       this.quiz[this.prevQno].userSelection = this.selectedOption;
     }
+    this.submitBtnHandler();
     this.questionCount = qno;
+
     if (this.quiz[this.questionCount].userSelection) {
       this.selectedOption = this.quiz[this.questionCount].userSelection;
     } else {
       this.selectedOption = "";
     }
 
-
-
-    console.log(this.prevQno + "prevQno----quc ", this.questionCount)
+    console.log(this.prevQno + "prevQno----quc ", this.questionCount);
 
   }
 
@@ -130,8 +134,15 @@ export class QuizComponent {
     return numArr;
   }
 
+  optionChanged(index: any) {
+    this.quiz[this.questionCount].validation = '';
+    this.quiz[this.questionCount].selectedOptionSeqNo = index;
+  }
+
+
   submitBtnHandler() {
     console.log("submit");
+    this.optionElArr = document.getElementsByClassName('options');
     let correctAnswer = this.checkUndefinedOrNullOrEmptyString(this.quiz[this.questionCount].answer) ? this.quiz[this.questionCount].answer : this.quiz[this.questionCount].answer.trim();
     let userSelectedAnswer = this.checkUndefinedOrNullOrEmptyString(this.selectedOption) ? this.selectedOption : this.selectedOption.trim();
     let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
@@ -143,6 +154,9 @@ export class QuizComponent {
       } else if (this.validation === 'wrong') {
         this.quiz[this.questionCount].validation = "N"
         currBtn.style.background = "red";
+
+        //let currOptionSeqNo = this.quiz[this.questionCount].selectedOptionSeqNo;
+        //sthis.optionElArr[currOptionSeqNo]
       }
     }
   }

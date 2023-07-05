@@ -1,15 +1,32 @@
 <div class="row quiz-section">
 
     <div class="col-10 columns">
-        <h3>Quiz</h3>
-        <b>{{questionCount+1}}.&nbsp;</b><label>{{quiz[questionCount].questions}}</label>
 
-        <div *ngFor="let option of quiz[questionCount].choices.split(','); let i = index">
-            <label>
-                <input id="opt{{i}}" name="options" type="radio" [value]="option" [(ngModel)]="selectedOption"
-                    (change)="submitBtnHandler()" />
-                {{option}}
-            </label>
+        <h3>Quiz</h3>
+        <label><b>{{questionCount+1}}.&nbsp;</b>{{quiz[questionCount].questions}}</label>
+
+
+        <!-- *ngIf="i==quiz[this.questionCount].selectedOptionSeqNo" -->
+        <div class="rows">
+            <div class="options" *ngFor="let option of quiz[questionCount].choices.split(','); let i = index">
+                <div class="col-1 columns">
+                    <span class="icons" *ngIf="i==quiz[this.questionCount].selectedOptionSeqNo ">
+                        <i class="bi bi-check right" *ngIf="quiz[this.questionCount].validation == 'Y'"
+                            style="font-size: 21px;color:green;"></i>
+                        <i class="bi bi-x wrong" *ngIf="quiz[this.questionCount].validation == 'N'"
+                            style="font-size: 21px;color:red"></i>
+                    </span>
+                </div>
+                <div class="col-11 columns">
+                    <!-- [disabled]="!checkUndefinedOrNullOrEmptyString(quiz[this.questionCount].validation)" -->
+                    <label>
+
+                        <input id="opt{{i}}" name="options" type="radio" [value]="option" [(ngModel)]="selectedOption"
+                            (change)="optionChanged(i)" />
+                        <span>{{option}}</span>
+                    </label>
+                </div>
+            </div>
         </div>
         <br>
         <p>Selected Answer: {{selectedOption}}</p>
@@ -47,12 +64,16 @@
             </div>
         </div>
 
+
+
+
+
         <button type="button" [disabled]="questionCount === maxQuestionCount-40" class="btn btn-primary"
             (click)="previousBtnHandler()">Previous</button>
         <button type="button" [disabled]="questionCount === maxQuestionCount-1" class="btn btn-primary"
             (click)="nextBtnHandler()">Next</button>
 
-        <button type="button" class="btn btn-primary" (click)="submitBtnHandler()">Submit</button>
+        <!-- <button type="button" class="btn btn-primary" (click)="submitBtnHandler()">Submit</button> -->
 
 
     </div>

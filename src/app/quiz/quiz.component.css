@@ -4,9 +4,9 @@
     margin-right: 10px;
 }
 
-.columns {
+/* .columns {
     border: 1px solid red;
-}
+} */
 
 .quiz-section {
     height: 600px;
@@ -37,4 +37,12 @@
 
 .need-to-attend {
     background: grey;
+}
+
+.icons {
+    position: absolute;
+}
+
+.options label {
+    margin-left: 2%;
 }
