@@ -25,6 +25,8 @@ export class QuizComponent {
   validation: any;
   qnoBtnElArr: any = [];
   activePractice: any;
+  startRange:number=0;
+  endRange:number=0;
 
 
   constructor(private route: ActivatedRoute) {
@@ -41,13 +43,35 @@ export class QuizComponent {
     }
     return data;
   }
+  async saveActivePractice() {
+    const { data, error } = await this.supabase.from('ActivePractice').insert([{ 
+                                                          SubjectId: this.subid, 
+                                                          UserId: this.practiceUserId,
+                                                          StartTime: Date.now(),
+                                                          StartRange: this.startRange,
+                                                          EndRange: this.endRange }]);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    return data;
+  }
   async getQuestions() {
     //const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid);
     //for now hard coded the sid, TBD
     //const {apData,aperror} = await this.supabase.from('ActicePractice').select('*').eq('sid', this.subid);	
     this.activePractice = await this.getActivePractice();
     console.log("activePractice ", this.activePractice)
-    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', 1);
+    if (this.activePractice) {console.log("active practice found for this user and subject");}
+    else {
+      console.log("no active practice found for this user and subject");
+      this.startRange=1;
+      this.endRange=(this.startRange+this.maxQuestionCount)-1;
+      await this.saveActivePractice();
+    }
+
+    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', 1).range(this.startRange,this.endRange);
 
     if (error) {
       console.log(error);
