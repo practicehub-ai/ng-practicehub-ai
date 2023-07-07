@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class QuizComponent {
   private supabase: SupabaseClient;
   subid: number = 0;
+  practiceUserId: any;
   maxQuestionCount: number = 40;
   prevQno: any;
   questions: any;
@@ -22,20 +23,34 @@ export class QuizComponent {
   selectionArray = [];
   validation: any;
   qnoBtnElArr: any = [];
+  activePractice: any;
 
 
   constructor(private route: ActivatedRoute) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
     this.route.queryParams.subscribe(params => { this.subid = params['subid']; });
+    this.practiceUserId=localStorage.getItem('practiceUserId');;
   }
-  async getQuestions() {
-    //const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid);
-    //for now hard coded the sid, TBD
-    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', 1);
+  async getActivePractice() {
+    const { data, error } = await this.supabase.from('ActicePractice').select('*').eq('SubjectId', this.subid).eq('practiceUserId', this.practiceUserId);
 
     if (error) {
       console.log(error);
       return;
+    }
+    return data;
+  }
+  async getQuestions() {
+    //const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid);
+    //for now hard coded the sid, TBD
+    //const {apData,aperror} = await this.supabase.from('ActicePractice').select('*').eq('sid', this.subid);	
+    this.activePractice = await this.getActivePractice();
+    console.log("activePractice ", this.activePractice)
+    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', 1);
+
+    if (error) {
+      console.log(error);
+      return null;
     }
     return data;
   }
