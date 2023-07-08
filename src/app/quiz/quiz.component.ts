@@ -28,7 +28,7 @@ export class QuizComponent {
   activePractice: any;
   startRange:number=0;
   endRange:number=0;
-
+  countOfAnsweredQuestions:number=0;
 
   constructor(private route: ActivatedRoute) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -36,17 +36,15 @@ export class QuizComponent {
     this.practiceUserId=localStorage.getItem('practiceUserId');
     if(this.practiceUserId) this.practiceUserId=JSON.parse(this.practiceUserId);
   }
+ 
+  ngOnInit() {
+    this.fetchQuestions();
+    this.qnoBtnElArr = document.getElementsByClassName('qno-btn');
+    this.qnoBtnHandler(0);
+
+  }
   async getActivePractice() {
     const { data, error } = await this.supabase.from('ActivePractice').select('*').eq('SubjectId', this.subid).eq('UserId', this.practiceUserId);
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-    return data;
-  }
-  async getProfile() {
-    const { data, error } = await this.supabase.from('Profile').select('*').eq('Id', this.practiceUserId);
 
     if (error) {
       console.log(error);
@@ -94,13 +92,6 @@ export class QuizComponent {
     }
     return data;
   }
-  ngOnInit() {
-    this.fetchQuestions();
-    this.qnoBtnElArr = document.getElementsByClassName('qno-btn');
-    this.qnoBtnHandler(0);
-
-  }
-
   async fetchQuestions() {
     this.questions = await this.getQuestions();
 
@@ -110,7 +101,8 @@ export class QuizComponent {
         questions: ques.question,
         choices: ques.choices,
         answer: ques.answer,
-        qid: ques.id
+        qid: ques.id,
+        isAnswered: false
       }
 
     });
@@ -118,9 +110,6 @@ export class QuizComponent {
 
     //this.selectedOption = this.quiz[0].choices.split(',')[1]
   }
-
-
-
   nextBtnHandler() {
     this.commonFuncOnNxtPrv()
     if (this.selectedOption) {
@@ -134,7 +123,6 @@ export class QuizComponent {
       let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
       currBtn.style.background = "yellow";
     }
-
     console.log("nxt ", this.questionCount,)
   }
   previousBtnHandler() {
@@ -154,8 +142,6 @@ export class QuizComponent {
 
     console.log("prv ", this.questionCount)
   }
-
-
   qnoBtnHandler(qno: number) {
 
     if (this.checkUndefinedOrNullOrEmptyString(this.quiz[qno].validation)) {
@@ -178,7 +164,6 @@ export class QuizComponent {
     console.log(this.prevQno + "prevQno----quc ", this.questionCount);
 
   }
-
   //function to return list of numbers from 0 to n-1
   numSequence(n: number): Array<number> {
     let numArr = [];
@@ -187,13 +172,10 @@ export class QuizComponent {
     }
     return numArr;
   }
-
   optionChanged(index: any) {
     this.quiz[this.questionCount].validation = '';
     this.quiz[this.questionCount].selectedOptionSeqNo = index;
   }
-
-
   submitBtnHandler() {
     console.log("submit");
     this.optionElArr = document.getElementsByClassName('options');
@@ -201,6 +183,9 @@ export class QuizComponent {
     let userSelectedAnswer = this.checkUndefinedOrNullOrEmptyString(this.selectedOption) ? this.selectedOption : this.selectedOption.trim();
     let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
     if (!this.checkUndefinedOrNullOrEmptyString(correctAnswer) && !this.checkUndefinedOrNullOrEmptyString(userSelectedAnswer)) {
+      this.quiz[this.questionCount].isAnswered = true;
+      this.countOfAnsweredQuestions = this.quiz.filter((ques: any) => ques.isAnswered).length;
+      console.log("countOfAnsweredQuestions ", this.countOfAnsweredQuestions)
       this.validation = (correctAnswer === userSelectedAnswer) ? 'right' : 'wrong';
       if (this.validation === 'right') {
         this.quiz[this.questionCount].validation = "Y"
@@ -208,27 +193,25 @@ export class QuizComponent {
       } else if (this.validation === 'wrong') {
         this.quiz[this.questionCount].validation = "N"
         currBtn.style.background = "red";
-
         //let currOptionSeqNo = this.quiz[this.questionCount].selectedOptionSeqNo;
         //sthis.optionElArr[currOptionSeqNo]
-      }
+      }    
+    }
+    
+    if(this.countOfAnsweredQuestions===this.maxQuestionCount){
+      this.saveActivePractice();
     }
   }
-
-
-
   commonFuncOnNxtPrv() {
     this.validation = '';
     //this.submitBtnHandler()
   }
-
   checkUndefinedOrNullOrEmptyString(value: any) {
     if (value === undefined || value === null || value === '') {
       return true;
     }
     return false;
   }
-
 
 }
 
