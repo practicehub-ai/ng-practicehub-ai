@@ -15,7 +15,7 @@ export class QuizComponent {
   optionElArr: any = [];
   private supabase: SupabaseClient;
   subid: number = 0;
-  practiceUserId: string|null = "";
+  practiceUserId: string | null = "";
   maxQuestionCount: number = 40;
   prevQno: any;
   questions: any;
@@ -26,18 +26,18 @@ export class QuizComponent {
   validation: any;
   qnoBtnElArr: any = [];
   activePractice: any;
-  startRange:number=0;
-  endRange:number=0;
-  countOfAnsweredQuestions:number=0;
-  activePracticeScore:number=0;
+  startRange: number = 0;
+  endRange: number = 0;
+  countOfAnsweredQuestions: number = 0;
+  activePracticeScore: number = 0;
 
   constructor(private route: ActivatedRoute) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
     this.route.queryParams.subscribe(params => { this.subid = Number(params['subid']); });
-    this.practiceUserId=localStorage.getItem('practiceUserId');
-    if(this.practiceUserId) this.practiceUserId=JSON.parse(this.practiceUserId);
+    this.practiceUserId = localStorage.getItem('practiceUserId');
+    if (this.practiceUserId) this.practiceUserId = JSON.parse(this.practiceUserId);
   }
- 
+
   ngOnInit() {
     this.fetchQuestions();
     this.qnoBtnElArr = document.getElementsByClassName('qno-btn');
@@ -54,12 +54,13 @@ export class QuizComponent {
     return data;
   }
   async saveActivePractice() {
-    const { data, error } = await this.supabase.from('ActivePractice').insert([{ 
-                                                          SubjectId: this.subid, 
-                                                          UserId: this.practiceUserId,
-                                                          StartTime: new Date().toISOString(),
-                                                          StartRange: this.startRange,
-                                                          EndRange: this.endRange }]);
+    const { data, error } = await this.supabase.from('ActivePractice').insert([{
+      SubjectId: this.subid,
+      UserId: this.practiceUserId,
+      StartTime: new Date().toISOString(),
+      StartRange: this.startRange,
+      EndRange: this.endRange
+    }]);
 
     if (error) {
       console.log(error);
@@ -67,15 +68,16 @@ export class QuizComponent {
     }
     return data;
   }
-  async savePracticeHistory(activePractice: any){
-    const { data, error } = await this.supabase.from('PracticeHistory').insert([{ 
-                                                          SubjectId: activePractice[0].SubjectId, 
-                                                          UserId: activePractice[0].UserId,
-                                                          StartTime: activePractice[0].StartTime,
-                                                          EndTime: activePractice[0].EndTime,
-                                                          StartRange: activePractice[0].StartRange,
-                                                          EndRange: activePractice[0].EndRange,
-                                                          Score:this.activePracticeScore }]);
+  async savePracticeHistory(activePractice: any) {
+    const { data, error } = await this.supabase.from('PracticeHistory').insert([{
+      SubjectId: activePractice[0].SubjectId,
+      UserId: activePractice[0].UserId,
+      StartTime: activePractice[0].StartTime,
+      EndTime: activePractice[0].EndTime,
+      StartRange: activePractice[0].StartRange,
+      EndRange: activePractice[0].EndRange,
+      Score: this.activePracticeScore
+    }]);
 
     if (error) {
       console.log(error);
@@ -84,20 +86,21 @@ export class QuizComponent {
     return data;
 
   }
-  async updateActivePractice(apid:number) {
+  async updateActivePractice(apid: number) {
     const { data, error } = await this.supabase.from('ActivePractice')
-                                            .update({ 
-                                                      id: apid,
-                                                      Status: 'Completed',
-                                                      EndTime: new Date().toISOString() })
-                                            .eq('id', apid).eq('UserId', this.practiceUserId).eq('SubjectId', this.subid)
-                                            .select()
+      .update({
+        id: apid,
+        Status: 'Completed',
+        EndTime: new Date().toISOString()
+      })
+      .eq('id', apid).eq('UserId', this.practiceUserId).eq('SubjectId', this.subid)
+      .select()
 
-    
+
     if (error) {
       console.log(error);
       return;
-    }else{
+    } else {
       this.activePracticeScore = this.quiz.filter((ques: any) => ques.userAnswer).length;
       console.log("activePracticeScore ", this.activePracticeScore);
       await this.savePracticeHistory(data);
@@ -110,19 +113,19 @@ export class QuizComponent {
     //const {apData,aperror} = await this.supabase.from('ActicePractice').select('*').eq('sid', this.subid);
     this.activePractice = await this.getActivePractice();
     console.log("activePractice ", this.activePractice)
-    if (this.activePractice && this.activePractice.length>0) {
+    if (this.activePractice && this.activePractice.length > 0) {
       console.log("active practice found for this user and subject");
-      this.startRange = this.activePractice[0].Status=="Completed"? this.activePractice[0].EndRange:this.activePractice[0].StartRange;
-      this.endRange = (this.startRange+this.maxQuestionCount);
+      this.startRange = this.activePractice[0].Status == "Completed" ? this.activePractice[0].EndRange : this.activePractice[0].StartRange;
+      this.endRange = (this.startRange + this.maxQuestionCount);
     }
     else {
       console.log("no active practice found for this user and subject");
-      this.startRange=1;
-      this.endRange=(this.startRange+this.maxQuestionCount)-1;
+      this.startRange = 1;
+      this.endRange = (this.startRange + this.maxQuestionCount) - 1;
       await this.saveActivePractice();
     }
 
-    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid).range(this.startRange,this.endRange);
+    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid).range(this.startRange, this.endRange);
 
     if (error) {
       console.log(error);
@@ -139,7 +142,7 @@ export class QuizComponent {
         questions: ques.question,
         choices: ques.choices,
         answer: ques.answer,
-        qid: ques.id,        
+        qid: ques.id,
         userAnswer: '',
         answerStatus: false,
       }
@@ -223,10 +226,10 @@ export class QuizComponent {
     let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
     if (!this.checkUndefinedOrNullOrEmptyString(correctAnswer) && !this.checkUndefinedOrNullOrEmptyString(userSelectedAnswer)) {
       this.quiz[this.questionCount].answerStatus = correctAnswer;
-      
+
       this.validation = (correctAnswer === userSelectedAnswer) ? true : false;
       this.quiz[this.questionCount].userAnswer = this.validation;
-      this.countOfAnsweredQuestions = this.quiz.filter((ques: any) => ques.answerStatus!='').length;
+      this.countOfAnsweredQuestions = this.quiz.filter((ques: any) => ques.answerStatus != '').length;
 
       console.log("countOfAnsweredQuestions ", this.countOfAnsweredQuestions);
       if (this.validation === true) {
@@ -237,16 +240,15 @@ export class QuizComponent {
         currBtn.style.background = "red";
         //let currOptionSeqNo = this.quiz[this.questionCount].selectedOptionSeqNo;
         //sthis.optionElArr[currOptionSeqNo]
-      }    
+      }
     }
   }
-  async completePracticeBtnHandler(){	
+  async completePracticeBtnHandler() {
     await this.updateActivePractice(this.activePractice[0].id);
-    if(this.countOfAnsweredQuestions===this.maxQuestionCount){
+    if (this.countOfAnsweredQuestions === this.maxQuestionCount) {
       this.updateActivePractice(this.activePractice[0].id);
     }
-    else
-    {
+    else {
       alert("Please answer all questions before completing the practice");
     }
   }

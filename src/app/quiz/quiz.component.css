@@ -4,17 +4,15 @@
     margin-right: 10px;
 }
 
-/* .columns {
-    border: 1px solid red;
-} */
+
 
 .quiz-section {
     height: 600px;
 }
 
 .qno-btn {
-    border: 1px solid;
-    /* height: 40px; */
+    border-radius: 15px;
+    background: #dce6eb;
     width: 40px;
     margin: 5px;
     text-align: center;
@@ -24,15 +22,15 @@
 }
 
 .right-answer {
-    background: green
+    background: #3cd73c;
 }
 
 .wrong-answer {
-    background: red;
+    background: #eb4a59;
 }
 
 .not-answered {
-    background: yellow;
+    background: #ffc107;
 }
 
 .need-to-attend {
