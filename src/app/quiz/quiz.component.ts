@@ -15,7 +15,7 @@ export class QuizComponent {
   optionElArr: any = [];
   private supabase: SupabaseClient;
   subid: number = 0;
-  practiceUserId: any;
+  practiceUserId: string|null = "";
   maxQuestionCount: number = 40;
   prevQno: any;
   questions: any;
@@ -114,7 +114,7 @@ export class QuizComponent {
       }
 
     });
-    console.log(this.quiz)
+    //console.log(this.quiz)
 
     //this.selectedOption = this.quiz[0].choices.split(',')[1]
   }
