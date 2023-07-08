@@ -29,6 +29,7 @@ export class QuizComponent {
   startRange:number=0;
   endRange:number=0;
   countOfAnsweredQuestions:number=0;
+  activePracticeScore:number=0;
 
   constructor(private route: ActivatedRoute) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -63,6 +64,43 @@ export class QuizComponent {
     if (error) {
       console.log(error);
       return;
+    }
+    return data;
+  }
+  async savePracticeHistory(activePractice: any){
+    const { data, error } = await this.supabase.from('PracticeHistory').insert([{ 
+                                                          SubjectId: activePractice[0].SubjectId, 
+                                                          UserId: activePractice[0].UserId,
+                                                          StartTime: activePractice[0].StartTime,
+                                                          EndTime: activePractice[0].EndTime,
+                                                          StartRange: activePractice[0].StartRange,
+                                                          EndRange: activePractice[0].EndRange,
+                                                          Score:this.activePracticeScore }]);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    return data;
+
+  }
+  async updateActivePractice(apid:number) {
+    const { data, error } = await this.supabase.from('ActivePractice')
+                                            .update({ 
+                                                      id: apid,
+                                                      Status: 'Completed',
+                                                      EndTime: new Date().toISOString() })
+                                            .eq('id', apid).eq('UserId', this.practiceUserId).eq('SubjectId', this.subid)
+                                            .select()
+
+    
+    if (error) {
+      console.log(error);
+      return;
+    }else{
+      this.activePracticeScore = this.quiz.filter((ques: any) => ques.userAnswer).length;
+      console.log("activePracticeScore ", this.activePracticeScore);
+      await this.savePracticeHistory(data);
     }
     return data;
   }
@@ -101,8 +139,9 @@ export class QuizComponent {
         questions: ques.question,
         choices: ques.choices,
         answer: ques.answer,
-        qid: ques.id,
-        isAnswered: false
+        qid: ques.id,        
+        userAnswer: '',
+        answerStatus: false,
       }
 
     });
@@ -183,23 +222,32 @@ export class QuizComponent {
     let userSelectedAnswer = this.checkUndefinedOrNullOrEmptyString(this.selectedOption) ? this.selectedOption : this.selectedOption.trim();
     let currBtn = this.qnoBtnElArr[this.questionCount] as HTMLDivElement;
     if (!this.checkUndefinedOrNullOrEmptyString(correctAnswer) && !this.checkUndefinedOrNullOrEmptyString(userSelectedAnswer)) {
-      this.quiz[this.questionCount].isAnswered = true;
-      this.countOfAnsweredQuestions = this.quiz.filter((ques: any) => ques.isAnswered).length;
-      console.log("countOfAnsweredQuestions ", this.countOfAnsweredQuestions)
-      this.validation = (correctAnswer === userSelectedAnswer) ? 'right' : 'wrong';
-      if (this.validation === 'right') {
+      this.quiz[this.questionCount].answerStatus = correctAnswer;
+      
+      this.validation = (correctAnswer === userSelectedAnswer) ? true : false;
+      this.quiz[this.questionCount].userAnswer = this.validation;
+      this.countOfAnsweredQuestions = this.quiz.filter((ques: any) => ques.answerStatus!='').length;
+
+      console.log("countOfAnsweredQuestions ", this.countOfAnsweredQuestions);
+      if (this.validation === true) {
         this.quiz[this.questionCount].validation = "Y"
         currBtn.style.background = "green";
-      } else if (this.validation === 'wrong') {
+      } else if (this.validation === false) {
         this.quiz[this.questionCount].validation = "N"
         currBtn.style.background = "red";
         //let currOptionSeqNo = this.quiz[this.questionCount].selectedOptionSeqNo;
         //sthis.optionElArr[currOptionSeqNo]
       }    
     }
-    
+  }
+  async completePracticeBtnHandler(){	
+    await this.updateActivePractice(this.activePractice[0].id);
     if(this.countOfAnsweredQuestions===this.maxQuestionCount){
-      this.saveActivePractice();
+      this.updateActivePractice(this.activePractice[0].id);
+    }
+    else
+    {
+      alert("Please answer all questions before completing the practice");
     }
   }
   commonFuncOnNxtPrv() {
