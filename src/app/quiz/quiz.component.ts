@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { json } from 'express';
 
 @Component({
   selector: 'app-quiz',
@@ -31,11 +32,21 @@ export class QuizComponent {
 
   constructor(private route: ActivatedRoute) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-    this.route.queryParams.subscribe(params => { this.subid = params['subid']; });
-    this.practiceUserId=localStorage.getItem('practiceUserId');;
+    this.route.queryParams.subscribe(params => { this.subid = Number(params['subid']); });
+    this.practiceUserId=localStorage.getItem('practiceUserId');
+    if(this.practiceUserId) this.practiceUserId=JSON.parse(this.practiceUserId);
   }
   async getActivePractice() {
-    const { data, error } = await this.supabase.from('ActicePractice').select('*').eq('SubjectId', this.subid).eq('practiceUserId', this.practiceUserId);
+    const { data, error } = await this.supabase.from('ActivePractice').select('*').eq('SubjectId', this.subid).eq('UserId', this.practiceUserId);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    return data;
+  }
+  async getProfile() {
+    const { data, error } = await this.supabase.from('Profile').select('*').eq('Id', this.practiceUserId);
 
     if (error) {
       console.log(error);
@@ -47,7 +58,7 @@ export class QuizComponent {
     const { data, error } = await this.supabase.from('ActivePractice').insert([{ 
                                                           SubjectId: this.subid, 
                                                           UserId: this.practiceUserId,
-                                                          StartTime: Date.now(),
+                                                          StartTime: new Date().toISOString(),
                                                           StartRange: this.startRange,
                                                           EndRange: this.endRange }]);
 
@@ -60,10 +71,14 @@ export class QuizComponent {
   async getQuestions() {
     //const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid);
     //for now hard coded the sid, TBD
-    //const {apData,aperror} = await this.supabase.from('ActicePractice').select('*').eq('sid', this.subid);	
+    //const {apData,aperror} = await this.supabase.from('ActicePractice').select('*').eq('sid', this.subid);
     this.activePractice = await this.getActivePractice();
     console.log("activePractice ", this.activePractice)
-    if (this.activePractice) {console.log("active practice found for this user and subject");}
+    if (this.activePractice && this.activePractice.length>0) {
+      console.log("active practice found for this user and subject");
+      this.startRange = this.activePractice[0].Status=="Completed"? this.activePractice[0].EndRange:this.activePractice[0].StartRange;
+      this.endRange = (this.startRange+this.maxQuestionCount);
+    }
     else {
       console.log("no active practice found for this user and subject");
       this.startRange=1;
@@ -71,7 +86,7 @@ export class QuizComponent {
       await this.saveActivePractice();
     }
 
-    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', 1).range(this.startRange,this.endRange);
+    const { data, error } = await this.supabase.from('QNA').select('*').eq('sid', this.subid).range(this.startRange,this.endRange);
 
     if (error) {
       console.log(error);
