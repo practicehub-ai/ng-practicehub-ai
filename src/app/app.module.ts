@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 
+import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -15,6 +17,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { SupabaseService } from './supabase.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -26,16 +29,19 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HeaderComponent,
     LogoutComponent,
     QuizComponent,
-    DashboardComponent
+    DashboardComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbPaginationModule,
+    NgbAlertModule
   ],
-  providers: [   
-      SupabaseService,
-      //authGuard
+  providers: [
+    SupabaseService,
+    //authGuard
   ],
   bootstrap: [AppComponent]
 })

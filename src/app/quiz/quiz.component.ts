@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { json } from 'express';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-quiz',
@@ -31,7 +33,7 @@ export class QuizComponent {
   countOfAnsweredQuestions: number = 0;
   activePracticeScore: number = 0;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private modalService: NgbModal) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
     this.route.queryParams.subscribe(params => { this.subid = Number(params['subid']); });
     this.practiceUserId = localStorage.getItem('practiceUserId');
@@ -101,7 +103,7 @@ export class QuizComponent {
     if (error) {
       console.log(error);
       return;
-    }  else {
+    } else {
       this.activePracticeScore = this.quiz.filter((ques: any) => ques.userAnswer).length;
       console.log("activePracticeScore ", this.activePracticeScore);
       await this.savePracticeHistory(data);
@@ -286,6 +288,14 @@ export class QuizComponent {
     return false;
   }
 
+
+  openPracticeComplModal() {
+    const modalRef = this.modalService.open(ModalComponent);
+    modalRef.componentInstance.modalBody = 'You have successfully completed the practice.';
+    modalRef.componentInstance.modalTitle = 'Practice Completion';
+  }
 }
+
+
 
 

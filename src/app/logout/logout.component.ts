@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SocialAuthService } from "@abacritt/angularx-social-login";
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,9 +8,8 @@ import { Router } from '@angular/router';
 })
 
 export class LogoutComponent {
-  constructor(private authService: SocialAuthService,private router: Router) { }
+  constructor(private router: Router) { }
   ngOnInit() {
-    this.authService.signOut();
     this.router.navigate(['/']);
   }
 }
