@@ -76,7 +76,8 @@ export class QuizComponent {
       EndTime: activePractice[0].EndTime,
       StartRange: activePractice[0].StartRange,
       EndRange: activePractice[0].EndRange,
-      Score: this.activePracticeScore
+      Score: this.activePracticeScore,
+      PracticeData: JSON.stringify(this.quiz)
     }]);
 
     if (error) {
@@ -100,10 +101,28 @@ export class QuizComponent {
     if (error) {
       console.log(error);
       return;
-    } else {
+    }  else {
       this.activePracticeScore = this.quiz.filter((ques: any) => ques.userAnswer).length;
       console.log("activePracticeScore ", this.activePracticeScore);
       await this.savePracticeHistory(data);
+    }
+    return data;
+  }
+  async updateActivePracticeSession(apid: number) {
+    const { data, error } = await this.supabase.from('ActivePractice')
+      .update({
+        id: apid,
+        Status: 'In progress',
+        StartTime: new Date().toISOString(),
+        StartRange: this.startRange,
+        EndRange: this.endRange
+      })
+      .eq('id', apid).eq('UserId', this.practiceUserId).eq('SubjectId', this.subid)
+      .select()
+
+    if (error) {
+      console.log(error);
+      return;
     }
     return data;
   }
@@ -117,6 +136,9 @@ export class QuizComponent {
       console.log("active practice found for this user and subject");
       this.startRange = this.activePractice[0].Status == "Completed" ? this.activePractice[0].EndRange : this.activePractice[0].StartRange;
       this.endRange = (this.startRange + this.maxQuestionCount);
+      if (this.activePractice[0].Status == "Completed") {
+        await this.updateActivePracticeSession(this.activePractice[0].id);
+      }
     }
     else {
       console.log("no active practice found for this user and subject");
@@ -244,6 +266,7 @@ export class QuizComponent {
     }
   }
   async completePracticeBtnHandler() {
+    console.log("completePracticeBtnHandler", this.quiz);
     await this.updateActivePractice(this.activePractice[0].id);
     if (this.countOfAnsweredQuestions === this.maxQuestionCount) {
       this.updateActivePractice(this.activePractice[0].id);
