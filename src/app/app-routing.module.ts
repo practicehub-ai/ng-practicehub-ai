@@ -7,6 +7,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SubjectComponent } from './subject/subject.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { authGuard } from './guards/auth.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, //default route to home
@@ -15,6 +16,8 @@ const routes: Routes = [
   { path: 'signup', component: SignUpComponent },
   { path: 'subject', component: SubjectComponent,canActivate: [authGuard] },
   { path: 'quiz', component: QuizComponent,canActivate: [authGuard]  },
+  { path: 'dashboard', component: DashboardComponent },
+
 
 ];
 

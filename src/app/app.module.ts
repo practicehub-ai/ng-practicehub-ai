@@ -14,6 +14,7 @@ import { HeaderComponent } from './header/header.component';
 import { LogoutComponent } from './logout/logout.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { SupabaseService } from './supabase.service';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SupabaseService } from './supabase.service';
     SubjectComponent,
     HeaderComponent,
     LogoutComponent,
-    QuizComponent
+    QuizComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
