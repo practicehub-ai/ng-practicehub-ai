@@ -53,6 +53,7 @@ export class HomeComponent {
     //Query Need To Be Optimised
     const { data, error } = (await this.supabase.from('QNA').select('*').eq('sid', subject.id));
     subject.questionLength = data?.length;
+    subject.description = "Become a PRO in " + subject.Subject + " (Text Need to be Added / Modified). (Text Need to be Added / Modified)."
 
   }
 
