@@ -1,5 +1,5 @@
 .home-section {
-    margin-top: 100px;
+    margin-top: 30px;
 }
 
 .container {
@@ -19,7 +19,12 @@
 }
 
 .card {
-    background: #dbe1e1 !important
+    /* background: #dbe1e1 !important */
+    background: #f4f1f9 !important
+}
+
+.sub-card-description {
+    color: darkviolet;
 }
 
 /* .subject-col {
