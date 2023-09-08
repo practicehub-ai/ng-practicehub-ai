@@ -1,0 +1,23 @@
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th colspan="4">Physics</th>
+            </tr>
+            <tr>
+                <th>Section</th>
+                <th>Topic</th>
+                <th>Content</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let content of contentsTable">
+                <td>{{content.section}}</td>
+                <td>{{content.topic}}</td>
+                <td>{{content.content}}</td>
+                <td><a href="contentquiz?contentid={{content.id}}">Start Practice</a>{{content.status}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
