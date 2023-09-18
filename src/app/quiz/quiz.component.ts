@@ -157,6 +157,7 @@ export class QuizComponent {
     }
     return data;
   }
+  
   async fetchQuestions() {
     this.questions = await this.getQuestions();
 
