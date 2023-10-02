@@ -1,0 +1,59 @@
+<div>
+    <!-- <table class="table table-hover">
+        <thead>
+            <tr>
+                <th colspan="4">Physics</th>
+            </tr>
+            <tr>
+                <th>Section</th>
+                <th>Topic</th>          
+                <th>Content</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let content of contentsTable">
+                <td>{{content.section}}</td>
+                <td>{{content.topic}}</td>
+                <td>{{content.content}}</td>
+                <td><a href="quiz?contentid={{content.id}}">Start Practice</a>{{content.status}}</td>
+            </tr>
+        </tbody>
+    </table> -->
+    <table class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+          <tr>
+            <th style="width: 20%;">Section</th>
+            <th style="width: 35%;">Topic</th>
+            <th style="width: 100px;">Content</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let content of contentsTable" >
+            <td>
+              <div class=" align-items-center">
+                
+                <div>
+                  <p class="fw-bold mb-0">{{content.section}}</p>
+                  <!-- <p class="text-muted mb-0">john.doe@gmail.com</p> -->
+                </div>
+              </div>
+            </td>
+            <td>
+              <!-- <p class="fw-normal mb-1">Software engineer</p> -->
+              <p class="text-muted mb-1">{{content.topic}}</p>
+            </td>
+            <!-- <td>
+              <div class="pending-bg">Inactive</div>
+            </td> -->
+            <td>{{content.content}}</td>
+            <!-- <td>
+              <button type="button" class="btn btn-link btn-sm btn-rounded">
+                Edit
+              </button>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+</div>

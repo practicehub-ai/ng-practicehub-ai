@@ -19,6 +19,7 @@ import { SupabaseService } from './supabase.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ModalComponent } from './modal/modal.component';
 import { ContentComponent } from './content/content.component';
+import { ContentNewComponent } from './content-new/content-new.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ContentComponent } from './content/content.component';
     QuizComponent,
     DashboardComponent,
     ModalComponent,
-    ContentComponent
+    ContentComponent,
+    ContentNewComponent
   ],
   imports: [
     BrowserModule,

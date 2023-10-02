@@ -1,0 +1,17 @@
+.fw-normal {
+    font-weight: 300!important;
+}
+
+.pending-bg {
+    border-radius: 10px;
+    background-color: yellowgreen;
+    width: 33%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+/* 
+th {
+    
+    border: 1px solid red !important;
+} */
