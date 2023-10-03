@@ -16,7 +16,6 @@ export class ContentNewComponent {
   contentsTable: any = [];
   previousSection: any = '';
   clonedContents:any = [];
-  previousTopic: any = '';
 
 
   constructor(private route: ActivatedRoute) {
@@ -38,25 +37,38 @@ export class ContentNewComponent {
   
   async fetchContents() {
     this.contents = await this.getContents(); 
-    this.clonedContents = [...this.contents];
-    this.clonedContents.forEach((obj:any) => {
-      //      
+    this.clonedContents = [];  
+    let previousTopic = '';
+    let str = '';
+    let currIndex = 0;
+
+    for(var i=0;i<this.contents.length;i++) {   
+      let currObj = this.contents[i];
+      if(currObj.Topic != previousTopic) {
+        previousTopic = currObj.Topic;
+        str = currObj.Content.trim()+', ';
+        currIndex = i;
+        this.clonedContents.push(currObj);
+      } else {
+        str += currObj.Content.trim()+', ';
+      }
+      this.clonedContents[this.clonedContents.length-1].Content=str;
+    }
+
+    let categorizedContents =  [...this.clonedContents];
+
+    categorizedContents.forEach((obj:any) => {           
       if(this.previousSection != obj.Section) {
         this.previousSection = obj.Section;
       } else {
         obj.Section = '';
       }
-      //
-      if(this.previousTopic != obj.Topic) {
-        this.previousTopic = obj.Topic;
-      } else {
-        obj.Topic = '';
-      }
-      //
-      
-      
-    }); 
-    this.contentsTable = this.contents.map((content: any) => {
+     }); 
+
+     console.log("--------")
+     console.log(categorizedContents)
+     
+    this.contentsTable = categorizedContents.map((content: any) => {
       return {
         id: content.id,
         section: content.Section,
